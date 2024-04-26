@@ -1,10 +1,10 @@
 <template>
     <footer id="footer" class="footer">
         <div class="copyright">
-            &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+            &copy; Copyright <strong><span>NiceAdmin</span></strong>. Tous droits réservés
         </div>
         <div class="credits">
-            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+            Fait par <a href="">EburG</a>
         </div>
     </footer>
 </template>

@@ -10,4 +10,5 @@ app.use(plugin, defaultConfig({
     locales: { fr },
     locale: 'fr',
 }))
+
 app.mount('#app')

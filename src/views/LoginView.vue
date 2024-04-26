@@ -1,12 +1,10 @@
 <template>
     <main>
         <div class="container">
-
             <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-
                             <div class="d-flex justify-content-center py-4">
                                 <a href="" class="logo d-flex align-items-center w-auto">
                                     <img src="/img/logo.png" alt="">
@@ -17,104 +15,40 @@
                             <div class="card mb-3">
                                 <div class="card-body">
                                     <div class="pt-4 pb-2">
-                                        <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
-                                        <p class="text-center small">Enter your username & password to login</p>
+                                        <h5 class="card-title text-center pb-0 fs-4">Authentification</h5>
+                                        <p class="text-center small">Entrez votre nom d'utilisateur et votre mot de passe pour vous connecter</p>
                                     </div>
 
-                                    <form class="row g-3 needs-validation" novalidate>
 
+                                    <form class="row g-3">
                                         <div class="col-12">
-                                            <label for="yourUsername" class="form-label">Username</label>
+                                            <label for="email" class="form-label">Email</label>
                                             <div class="input-group has-validation">
-                                                <span class="input-group-text" id="inputGroupPrepend">@</span>
-                                                <input type="text" name="username" class="form-control"
-                                                    id="yourUsername" required>
-                                                <div class="invalid-feedback">Please enter your username.</div>
+                                                <input type="email" v-model="formData.email" class="form-control">
+                                                <template v-if=" v$.email.$error">
+                                                    <div v-for="(error, index) in v$.email.$silentErrors" :key="index+'email'" class="invalid-feedback">{{ error.$message }}</div>
+                                                </template>
                                             </div>
                                         </div>
 
                                         <div class="col-12">
-                                            <label for="yourPassword" class="form-label">Password</label>
-                                            <input type="password" name="password" class="form-control"
-                                                id="yourPassword" required>
-                                            <div class="invalid-feedback">Please enter your password!</div>
+                                            <label for="pwd" class="form-label">Mot de passe</label>
+                                            <input type="password" name="password" v-model="formData.password" class="form-control">
+                                            <template v-if=" v$.password.$error">
+                                                <div v-for="(error, index) in v$.password.$silentErrors" :key="index+'pwd'" class="invalid-feedback">{{ error.$message }}</div>
+                                            </template>
                                         </div>
 
                                         <div class="col-12">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="remember"
-                                                    value="true" id="rememberMe">
-                                                <label class="form-check-label" for="rememberMe">Remember me</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <button class="btn btn-primary w-100" type="submit">Login</button>
+                                            <button class="btn btn-primary w-100" @click.prevent="submitHandler()">Login</button>
                                         </div>
                                         <div class="col-12">
                                             <p class="small mb-0">Don't have account? <a
                                                     href="pages-register.html">Create an account</a></p>
                                         </div>
                                     </form>
-                                </div>
-                            </div>
 
-                            <div class="credits">
-                                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-                            </div>
-
-
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <div class="pt-4 pb-2">
-                                        <h5 class="card-title text-center pb-0 fs-4">Authentification</h5>
-                                        <p class="text-center small">Entrez votre nom d'utilisateur et votre mot de passe pour vous connecter</p>
-                                    </div>
-
-                                    <FormKit
-                                        type="form" id="myForm"
-                                        @submit="submitHandler"
-                                        :actions="false"
-                                        :classes="{
-                                            inner: 'row g-3 needs-validation',
-                                        }"
-                                    >
-                                        <div class="col-12">
-                                            <FormKit 
-                                                name="email" type="email" label="Email" validation="required|email"
-                                                :classes="{ label: 'form-label', input: 'form-control' }"
-                                                error-behavior="live"
-                                                validation-label="Email"
-                                            />
-                                        </div>
-
-                                        <div class="col-12">
-                                            <FormKit 
-                                                name="password" type="password" label="Password"
-                                                :classes="{ label: 'form-label', input: 'form-control', }"
-                                                error-behavior="live" validation="required"
-                                                :validation-messages="{
-                                                    required: 'Le mot de passe est obligatoire',
-                                                }"
-                                            />
-                                        </div>
-
-                                        <div class="col-12">
-                                            <FormKit
-                                                type="submit"
-                                                label="Se connecter"
-                                                :classes="{
-                                                    outer: {},
-                                                    input: 'btn btn-primary w-100 my-3',
-                                                }"
-                                            />
-                                        </div>
-
-                                        <div class="col-12">
-                                            <p class="small mt-2">Don't have account? 
-                                                <a href="">Create an account</a>
-                                            </p>
-                                        </div>
-                                    </FormKit>
+                                    
 
 
                                 </div>
@@ -123,28 +57,52 @@
                             <div class="credits">
                                 Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
                             </div>
-
-                           
-
-
                         </div>
                     </div>
                 </div>
 
             </section>
-
         </div>
     </main>
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+    import { onMounted, reactive } from 'vue'
+    import { useVuelidate } from '@vuelidate/core'
+    import { useRoute, useRouter } from 'vue-router'
+    import { required, email, helpers, minLength } from '@vuelidate/validators'
 
-onMounted(() => {
-})
+    const router = useRouter()
+    const route = useRoute()
 
-const submitHandler = (values) => {
-    console.log("My data loaded", values);
-  }
+    const formData = reactive({
+        email: '',
+        password: '',
+    })
+
+    const rules = {
+        email: { 
+            required: helpers.withMessage('Ce champ ne peut pas être vide', required), 
+            email: helpers.withMessage("La valeur n'est pas une adresse électronique valide", email), 
+        },
+        password: {
+            required: helpers.withMessage('Ce champ ne peut pas être vide', required),
+            minLength: helpers.withMessage('Ce champ doit comporter plus de caractères', minLength(6)),
+        },
+    }
+
+    const v$ = useVuelidate(rules, formData)
+
+    onMounted(() => {
+        console.log("params route", route.query.search ?? '' );
+    })
+
+    const submitHandler = async () => {
+        const result = await v$.value.$validate();
+        if (result) {
+            console.log("succes form", formData);
+            router.push({ name: 'home'})
+        }
+    }
 
 </script>
