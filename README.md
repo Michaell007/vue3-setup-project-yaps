@@ -1,5 +1,3 @@
-# vue-manage-mission
-
 ## Project setup
 ```
 npm install
