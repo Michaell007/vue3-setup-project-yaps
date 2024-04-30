@@ -26,9 +26,11 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Datatables</h5>
 
-                        <div class="col-md-12 d-flex justify-content-end mb-2">
+                        <div class="col-md-12 d-flex justify-content-between my-2">
+                            <div class="col-md-4">
+                                <button @click="gotoPage('profil-creer')" type="button" class="btn btn-primary"><i class="bi bi-plus me-1"></i> Créer un nouveau</button>
+                            </div>
                             <div class="col-md-4">
                                 <input v-model="paramsTable.search" type="text" class="form-control" placeholder="Rechercher ...">
                             </div>
@@ -59,6 +61,8 @@
                             </template>
                         </vue3-datatable>
 
+                        <VueSpinner size="20" color="red" />
+
                     </div>
                 </div>
             </div>
@@ -70,7 +74,12 @@
     import { onMounted, ref, reactive } from 'vue'
     import Vue3Datatable from '@bhplugin/vue3-datatable';
     import '@bhplugin/vue3-datatable/dist/style.css';
+    import { VueSpinner } from 'vue3-spinners';
     import Swal from 'sweetalert2'
+    import { toast } from 'vue3-toastify';
+    import { useRouter } from 'vue-router'
+
+    const router = useRouter()
 
     // MODAL
     const modalRefDetails = ref(null)
@@ -1131,8 +1140,20 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 console.log("Confirmer a été validé");
+                notify()
             }
         })
+    }
+
+    const notify = () => {
+        toast("Wow so easy !", {
+            autoClose: 3000,
+            position: toast.POSITION.BOTTOM_LEFT,
+        });
+    }
+
+    const gotoPage = (name) => {
+        router.push({ name: name })
     }
 
 

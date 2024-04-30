@@ -9,12 +9,20 @@ const routes = [
             {
                 path: 'home',
                 name: 'home',
-                component: () => import('@/views/HomeView.vue')
+                component: () => import('@/views/HomeView.vue'),
+                meta: {
+                    auth :true
+                },
             },
             {
                 path: 'profil-liste',
                 name: 'profil-liste',
                 component: () => import('@/views/ProfileView.vue')
+            },
+            {
+                path: 'profil-creer',
+                name: 'profil-creer',
+                component: () => import('@/views/ProfileCreateView.vue')
             }
         ]
     },
@@ -23,11 +31,21 @@ const routes = [
         name: 'Login',
         component: () => import('@/views/LoginView.vue')
     }
-]
+] 
 
 const router = createRouter({
     history: createWebHistory(),
     routes,
+})
+
+router.beforeEach((to, from, next) => {
+    const loggedIn = false
+   
+    if (to.meta.auth && !loggedIn) {
+      next('/login');
+    } else {
+      next();
+    }
 })
 
 export default router
