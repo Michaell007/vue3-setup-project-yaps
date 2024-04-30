@@ -78,6 +78,7 @@
     import Swal from 'sweetalert2'
     import { toast } from 'vue3-toastify';
     import { useRouter } from 'vue-router'
+    import api from "../services/axios"
 
     const router = useRouter()
 
@@ -1158,6 +1159,13 @@
 
 
     onMounted(() => {
+        api.get('https://api.restful-api.dev/objects/7')
+        .then((response) => {
+            console.log("axios response", response.data);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
     })
 
 </script>
